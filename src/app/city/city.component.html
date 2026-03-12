@@ -1,0 +1,35 @@
+<div class="form m-5">
+    <input type="text" class="form-control mt-2" placeholder="Azonosító" [formControl]="identifierFilter">
+    <input type="text" class="form-control mt-2" placeholder="Energiaigény" [formControl]="energyDemandFilter">
+    <input type="text" class="form-control mt-2" placeholder="Állapot" [formControl]="statusFilter">
+    <input type="text" class="form-control mt-2" placeholder="Helyszín" [formControl]="cityFilter">
+</div>
+
+<table class="table-dark table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Azonosító</th>
+            <th>Energiaigény</th>
+            <th>Állapot</th>
+            <th>Helyszín</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(item of data| cityFilter : {
+            idenfitier:identifierFilter.value,
+            energyDemand:energyDemandFilter.value,
+            status:statusFilter.value,
+            city:cityFilter.value
+            };track item.id){
+        <tr class="">
+            <td>{{item.id}}</td>
+            <td>{{item.identifier}}</td>
+            <td>{{item.energyDemand}}</td>
+            <td>{{item.status}}</td>
+            <td>{{item.location}}</td>
+        </tr>
+        }
+    </tbody>
+
+</table>
