@@ -1,11 +1,4 @@
-<div class="form m-5">
-    <input type="text" class="form-control mt-2" placeholder="Azonosító" [formControl]="identifierFilter">
-    <input type="text" class="form-control mt-2" placeholder="Energiaigény" [formControl]="energyDemandFilter">
-    <input type="text" class="form-control mt-2" placeholder="Állapot" [formControl]="statusFilter">
-    <input type="text" class="form-control mt-2" placeholder="Helyszín" [formControl]="cityFilter">
-</div>
-
-<table class="table-dark table table-striped">
+<table class="table-dark table table-striped" [formGroup]="filteringForm">
     <thead>
         <tr>
             <th>Id</th>
@@ -14,14 +7,16 @@
             <th>Állapot</th>
             <th>Helyszín</th>
         </tr>
+        <tr>
+            <th> <input type="text" class="form-control" placeholder="Id" formControlName="id"></th>
+            <th> <input type="text" class="form-control" placeholder="Azonosító" formControlName="identifier"></th>
+            <th> <input type="text" class="form-control" placeholder="Energiaigény" formControlName="energyDemand"></th>
+            <th> <input type="text" class="form-control" placeholder="Státusz" formControlName="status"></th>
+            <th> <input type="text" class="form-control" placeholder="Helyszín" formControlName="location"></th>
+        </tr>
     </thead>
     <tbody>
-        @for(item of data| cityFilter : {
-            idenfitier:identifierFilter.value,
-            energyDemand:energyDemandFilter.value,
-            status:statusFilter.value,
-            city:cityFilter.value
-            };track item.id){
+        @for(item of (data|cityFilter:filteringForm.value);track item.id){
         <tr class="">
             <td>{{item.id}}</td>
             <td>{{item.identifier}}</td>

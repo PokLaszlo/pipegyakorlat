@@ -2,27 +2,32 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'cityFilter',
-  standalone:true
+  standalone:true,
+  pure:false
 })
 export class CityFilterPipe implements PipeTransform {
 
   transform(deviceList: any[], 
-    filters:{
-    idenfitier:string|null;
-    energyDemand:string|null;
-    status:string|null;
-    city:string|null}): any {
+    filters:any): any[] {
 
-    if(!deviceList ||(!filters.idenfitier && !filters.energyDemand && !filters.status && !filters.city)){
+    if(!deviceList ||!filters){
       return deviceList;
     }
     return deviceList.filter((device)=>{
-      return (
-        device.identifier.toLowerCase().includes(filters.idenfitier?.toLowerCase())&&
-        device.energyDemand.toLowerCase().includes(filters.energyDemand?.toLowerCase())&&
-        device.status.toLowerCase().includes(filters.status?.toLowerCase())&&
-        device.location.toLowerCase().includes(filters.city?.toLowerCase())
-      )
+      return Object.keys(filters).every((key)=>{
+        const filterValue = filters[key]
+        const deviceValue = device[key]
+        if(filterValue == null ||filterValue==undefined||filterValue==""){
+          return true
+        }
+        if(typeof deviceValue === "number"){
+          return deviceValue.toString().includes(filterValue.toString())
+        }
+        if(typeof deviceValue === "string"){
+          return deviceValue.toLowerCase().includes(filterValue.toLowerCase())
+        }
+        return true;
+      })
     });
   }
 

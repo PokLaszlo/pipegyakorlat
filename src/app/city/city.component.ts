@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder,  ReactiveFormsModule } from '@angular/forms';
 import { CityService } from '../shared/city.service';
 import { CityFilterPipe } from '../shared/pipe/city-filter-pipe';
 
@@ -11,10 +11,15 @@ import { CityFilterPipe } from '../shared/pipe/city-filter-pipe';
 })
 export class CityComponent {
   data = inject(CityService).getCities()
-  identifierFilter = new FormControl('')
-  cityFilter = new FormControl('')
-  energyDemandFilter = new FormControl('')
-  statusFilter = new FormControl('')
+  builder = inject(FormBuilder)
+
+  filteringForm = this.builder.group({
+    id:"",
+    identifier:"",
+    energyDemand:"",
+    status:"",
+    location:""
+  })
   
   ngOnInit(){
     this.data
